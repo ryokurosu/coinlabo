@@ -11,7 +11,7 @@ use DB;
 use Mail; 
 use Illuminate\Http\Request; 
 use App\Mail\EmailVerification; 
-
+use Exception;
 
 
 class RegisterController extends Controller
