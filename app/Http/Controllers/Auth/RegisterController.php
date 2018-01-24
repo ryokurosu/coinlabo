@@ -114,7 +114,8 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'code' => $this->makeRandStr(16),
             'email_token' => str_random(10), 
-        ]);
+'status' => 1,       
+ ]);
 
         $user->getnewaddress();
 
