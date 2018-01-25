@@ -55,7 +55,7 @@ class UserController extends Controller
        $title = $crawler->filter('title')->text();
        $imageUrl = '';
        $imageName = 'noimage.jpg';
-       try{
+      // try{
 
          $crawler->filter('meta')->each(function($node) use (&$imageUrl){
           if($node->attr('property') =='og:image'){
@@ -77,11 +77,10 @@ class UserController extends Controller
          $imageName = $this->makeRandStr(8).'.'.$extension;
 
 
-         $image->save('./images/'.$imageName);
-
-       }catch(Exception $e){
+         $image->save(url('images/'.$imageName));
+  //     }catch(Exception $e){
 // $imageUrlが取れない時ある
-       }
+    //   }
 
        Article::create([
         'user_id' => Auth::id(),
@@ -151,7 +150,7 @@ class UserController extends Controller
        $imageName = $this->makeRandStr(8).'.'.$extension;
 
 
-       $image->save('./images/'.$imageName);
+       $image->save(public_path('images/'.$imageName));
 
      }catch(Exception $e){
 // $imageUrlが取れない時ある

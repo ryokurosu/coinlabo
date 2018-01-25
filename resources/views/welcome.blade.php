@@ -63,7 +63,6 @@ html, body {
 @stop
 
 @section('content')
-
 <div class="content">
     <div class="title m-b-md">
         {{config('app.name')}}
