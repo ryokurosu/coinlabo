@@ -24,6 +24,8 @@
                     <td>ユーザーID</td>
                     <td>ユーザー名</td>
                     <td>権限</td>
+                    <td>アドレス</td>
+                    <td>残高</td>
                     <td>稼働状況</td>
                     <td>強制停止</td>
                 </tr>
@@ -40,6 +42,8 @@
                         一般
                         @endif
                     </td>
+                    <td>{{$user->getaddress()}}</td>
+                    <td>{{$user->getbalance()}}BTC</td>
                     <td>
                         @if($user->active)
                         稼働中

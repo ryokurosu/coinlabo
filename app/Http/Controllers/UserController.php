@@ -44,133 +44,151 @@ class UserController extends Controller
       ]);
     }
 
-    public function articleNew(Request $request)
-    {
-      try{
-
-       $url = $request->url;
-       // 個々から作る。スクレイピングしてタイトルとサムネイルを取ってくる必要がある
-       $client = new Client();
-       $crawler = $client->request('GET', $url);
-       $title = $crawler->filter('title')->text();
-       $imageUrl = '';
-       $imageName = 'noimage.jpg';
-      // try{
-
-         $crawler->filter('meta')->each(function($node) use (&$imageUrl){
-          if($node->attr('property') =='og:image'){
-           $imageUrl =  $node->attr('content');
-           return false;
-         }
-       });
-
-
-         $imageUrl = strtok($imageUrl, '?');
-         $image = Image::make(file_get_contents($imageUrl));
-         $temp = explode('.',$imageUrl);
-         $extension = $temp[count($temp) - 1];
-
-         $image->resize(1200, null, function ($constraint) {
-          $constraint->aspectRatio();
-        });
-
-         $imageName = $this->makeRandStr(8).'.'.$extension;
-
-
-         $image->save(url('images/'.$imageName));
-  //     }catch(Exception $e){
-// $imageUrlが取れない時ある
-    //   }
-
-       Article::create([
-        'user_id' => Auth::id(),
-        'url' => $url,
-        'title' => $title,
-        'thumbnail' => $imageName,
+    public function withdraw(){
+      return view('user.withdraw',[
+        'user' => Auth::user(),
       ]);
-       \Session::flash('message', '記事を申請しました。');   
-
-     }catch(Exception $e){
-
-      \Session::flash('message', "記事の申請に失敗しました。\n".$e->getMessage()); 
     }
-    return back();
-  }
 
-  public function blog()
-  {
-    $user = Auth::user();
-    $blogs = $user->blogs()->paginate(5);
-    return view('user.blog',[
-      'user' => $user,
-      'blogs' => $blogs
-    ]);
-  }
+    public function withdrawPost(Request $request){
+      $user = Auth::user();
+      try{
+        $result = $user->sendfrom($request->address,$request->amount);
+        \Session::flash('message', "送金が完了しました。トランザクションID：".$result->get());   
+      }catch(Exception $e){
 
-  public function profile(){
-    return view('user.profile',[
-      'user' => Auth::user()
-    ]);
-  }
+        \Session::flash('message', "送金に失敗しました".$e->getMessage());   
+     }
+     return back();
+   }
 
-  public function getaddress(Request $request){
-    return $this->_getaddress();
-  }
-  
-
-  public function BlogNew(Request $request)
-  {
+   public function articleNew(Request $request)
+   {
     try{
 
      $url = $request->url;
+       // 個々から作る。スクレイピングしてタイトルとサムネイルを取ってくる必要がある
      $client = new Client();
      $crawler = $client->request('GET', $url);
      $title = $crawler->filter('title')->text();
      $imageUrl = '';
      $imageName = 'noimage.jpg';
-     try{
+      // try{
 
-       $crawler->filter('meta')->each(function($node) use (&$imageUrl){
-        if($node->attr('property') =='og:image'){
-         $imageUrl =  $node->attr('content');
-         return false;
-       }
-     });
-
-
-       $imageUrl = strtok($imageUrl, '?');
-       $image = Image::make(file_get_contents($imageUrl));
-       $temp = explode('.',$imageUrl);
-       $extension = $temp[count($temp) - 1];
-
-       $image->resize(1200, null, function ($constraint) {
-        $constraint->aspectRatio();
-      });
-
-       $imageName = $this->makeRandStr(8).'.'.$extension;
-
-
-       $image->save(public_path('images/'.$imageName));
-
-     }catch(Exception $e){
-// $imageUrlが取れない時ある
+     $crawler->filter('meta')->each(function($node) use (&$imageUrl){
+      if($node->attr('property') =='og:image'){
+       $imageUrl =  $node->attr('content');
+       return false;
      }
+   });
 
-     Blog::create([
+
+     $imageUrl = strtok($imageUrl, '?');
+     $image = Image::make(file_get_contents($imageUrl));
+     $temp = explode('.',$imageUrl);
+     $extension = $temp[count($temp) - 1];
+
+     $image->resize(1200, null, function ($constraint) {
+      $constraint->aspectRatio();
+    });
+
+     $imageName = $this->makeRandStr(8).'.'.$extension;
+
+
+     $image->save('./images/'.$imageName);
+  //     }catch(Exception $e){
+// $imageUrlが取れない時ある
+    //   }
+
+     Article::create([
       'user_id' => Auth::id(),
       'url' => $url,
       'title' => $title,
-      'rss' =>$request->rss,
       'thumbnail' => $imageName,
     ]);
-     \Session::flash('message', 'ブログを申請しました。');  
-   }catch(Exception $e){
-     \Session::flash('message', "ブログの申請に失敗しました。\n".$e->getMessage()); 
-   }
-   return back();
- }
+     \Session::flash('message', '記事を申請しました。');   
 
- public function blogFetch(){
+   }catch(Exception $e){
+
+    \Session::flash('message', "記事の申請に失敗しました。\n".$e->getMessage()); 
+  }
+  return back();
+}
+
+public function blog()
+{
+  $user = Auth::user();
+  $blogs = $user->blogs()->paginate(5);
+  return view('user.blog',[
+    'user' => $user,
+    'blogs' => $blogs
+  ]);
+}
+
+public function profile(){
+  return view('user.profile',[
+    'user' => Auth::user()
+  ]);
+}
+
+public function getaddress(Request $request){
+  return $this->_getaddress();
+}
+
+
+public function BlogNew(Request $request)
+{
+  try{
+
+   $url = $request->url;
+   $client = new Client();
+   $crawler = $client->request('GET', $url);
+   $title = $crawler->filter('title')->text();
+   $imageUrl = '';
+   $imageName = 'noimage.jpg';
+   try{
+
+     $crawler->filter('meta')->each(function($node) use (&$imageUrl){
+      if($node->attr('property') =='og:image'){
+       $imageUrl =  $node->attr('content');
+       return false;
+     }
+   });
+
+
+     $imageUrl = strtok($imageUrl, '?');
+     $image = Image::make(file_get_contents($imageUrl));
+     $temp = explode('.',$imageUrl);
+     $extension = $temp[count($temp) - 1];
+
+     $image->resize(1200, null, function ($constraint) {
+      $constraint->aspectRatio();
+    });
+
+     $imageName = $this->makeRandStr(8).'.'.$extension;
+
+
+     $image->save('./images/'.$imageName);
+
+   }catch(Exception $e){
+// $imageUrlが取れない時ある
+   }
+
+   Blog::create([
+    'user_id' => Auth::id(),
+    'url' => $url,
+    'title' => $title,
+    'rss' =>$request->rss,
+    'thumbnail' => $imageName,
+  ]);
+   \Session::flash('message', 'ブログを申請しました。');  
+ }catch(Exception $e){
+   \Session::flash('message', "ブログの申請に失敗しました。\n".$e->getMessage()); 
+ }
+ return back();
+}
+
+public function blogFetch(){
   try{
 
     $blogs = Auth::user()->blogs()->active()->get();

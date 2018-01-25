@@ -31,6 +31,7 @@
             <a href="{{route('user.googleauth')}}" class="btn btn-success">2段階認証を設定する</a>
             <p>※2段階認証が<b>未設定</b>です。</p>
             @endif
+            <a href="{{route('user.withdraw')}}" class="btn btn-info">出金</a>
         </div>
 
         <!-- Modal -->

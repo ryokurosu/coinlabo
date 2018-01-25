@@ -19,7 +19,7 @@ class CommentController extends Controller
         $this->middleware('auth');
     }
 
-    public function commentPost($id,Request $request)
+    public function postComment($id,Request $request)
     {
       Comment::create([
         'user_id' => Auth::id(),

@@ -110,7 +110,11 @@ class User extends Authenticatable
      return $this->bitcoind->getnewaddress($this->code)->get();
  }
 
- public function setGoogle2FA($secretKey){
+ public function sendfrom($toAddress,$amount){
+    return $this->bitcoind->sendfrom($this->code,$toAddress,$amount);
+}
+
+public function setGoogle2FA($secretKey){
     $this->google2fa_secret = $secretKey;
     $this->google2fa = 1;
     $this->save();

@@ -13,7 +13,6 @@ use App\Blog;
 |
 */
 
-try{
 
 View::share('PopularArticles',Article::active()->orderBy('amount','desc')->get());
 View::share('PopularBlogs',Blog::active()->orderBy('amount','desc')->get());
@@ -26,6 +25,14 @@ Route::get('/', function () {
 })->name('root');
 
 Auth::routes();
+
+Route::view('/policy','policy')->name('policy');
+Route::view('/privacy','privacy')->name('privacy');
+Route::view('/company','company')->name('company');
+Route::view('/guideline','guideline')->name('guideline');
+Route::view('/tokusho','tokusho')->name('tokusho');
+Route::view('/contact','contact')->name('contact');
+
 Route::get('/register/verify/{token}', 'Auth\RegisterController@verify');
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -46,6 +53,10 @@ Route::get('/user/article','UserController@article')->name('user.article');
 Route::post('/user/article/new','UserController@articleNew')->name('user.article.new');
 Route::get('/user/article/fetch','UserController@articleFetch')->name('user.article.fetch');
 Route::get('/user/profile','UserController@profile')->name('user.profile');
+
+Route::get('/user/withdraw','UserController@withdraw')->name('user.withdraw');
+Route::post('/user/withdraw','UserController@withdrawPost')->name('user.withdraw.post');
+
 Route::post('/user/getaddress','UserController@getaddress')->name('user.getaddress');
 Route::post('/user/articledonate','UserController@articleDonate')->name('user.articledonate');
 Route::post('/user/blogdonate','UserController@blogDonate')->name('user.articledonate');
@@ -80,8 +91,5 @@ Route::post('/admin/topic/{id}','AdminController@topicPost');
 Route::get('/admin/user','AdminController@user')->name('admin.user');
 Route::get('/admin/user/{id}/{status}','AdminController@userUpdate')->where('status',array('activate','inactivate'))->name('admin.user.edit');
 
-}catch(\Exception $e){
- echo $e->getMessage();
-}
 
 

@@ -142,10 +142,32 @@
       @if(View::hasSection('fullLayout'))
       <div id="main" class="col-md-12 col-xs-12">
         @yield('content')
+        <div class="sns">
+          <a class="sns-icon" href="https://twitter.com/intent/tweet?text=@if(Request::url() != Request::root())@yield('description') via @endif{{ config('app.name', 'Laravel') }}&url={{url()->full()}}&hashtags={{ config('app.name', 'Laravel') }}" onClick="window.open(encodeURI(decodeURI(this.href)), 'tweetwindow', 'width=650, height=470, personalbar=0, toolbar=0, scrollbars=1, sizable=1'); return false;" rel="nofollow">
+            <img src="{{url('/twitter.png')}}" width="24">
+          </a>
+          <a class="sns-icon" href="http://www.facebook.com/sharer.php?u={{url()->full()}}" target="_blank" rel="nofollow">
+            <img src="{{url('/facebook.png')}}" width="24">
+          </a>
+          <a class="sns-icon" href="http://line.me/R/msg/text/?{{url()->full()}}" rel="nofollow">
+            <img src="{{url('/line.png')}}" width="24">
+          </a>
+        </div>
       </div>
       @else
       <div id="main" class="col-md-9 col-xs-12">
         @yield('content')
+        <div class="sns">
+          <a class="sns-icon" href="https://twitter.com/intent/tweet?text=@if(Request::url() != Request::root())@yield('description') via @endif{{ config('app.name', 'Laravel') }}&url={{url()->full()}}&hashtags={{ config('app.name', 'Laravel') }}" onClick="window.open(encodeURI(decodeURI(this.href)), 'tweetwindow', 'width=650, height=470, personalbar=0, toolbar=0, scrollbars=1, sizable=1'); return false;" rel="nofollow">
+            <img src="{{url('/twitter.png')}}" width="24">
+          </a>
+          <a class="sns-icon" href="http://www.facebook.com/sharer.php?u={{url()->full()}}" target="_blank" rel="nofollow">
+            <img src="{{url('/facebook.png')}}" width="24">
+          </a>
+          <a class="sns-icon" href="http://line.me/R/msg/text/?{{url()->full()}}" rel="nofollow">
+            <img src="{{url('/line.png')}}" width="24">
+          </a>
+        </div>
       </div>
       <div id="side" class="col-md-3 col-xs-12">
         <!-- ここにsideコンテンツも自動で入れて良い -->
@@ -196,8 +218,19 @@
     @endif
   </div>
 </div>
-</div>
 
+</div>
+<footer id="footer">
+  <ul class="footer-list-group">
+    <li class="footer-list-group-item"><a href="{{route('policy')}}" target="_blank">利用規約</a></li>
+    <li class="footer-list-group-item"><a href="{{route('privacy')}}" target="_blank">プライバシーポリシー</a></li>
+    <li class="footer-list-group-item"><a href="{{route('company')}}" target="_blank">会社概要</a></li>
+    <li class="footer-list-group-item"><a href="{{route('guideline')}}" target="_blank">ガイドライン</a></li>
+    <li class="footer-list-group-item"><a href="{{route('tokusho')}}" target="_blank">特定商取引法に基づく表記</a></li>
+    <li class="footer-list-group-item"><a href="{{route('contact')}}" target="_blank">お問い合わせ</a></li>
+  </ul>
+  <p class="copy"><center>© 2018 <a href="{{url('/')}}">COINLABO</a>. All Rights Reserved.</center></p>
+</footer>
 <!-- Scripts -->
 <script>
   $(function(){
