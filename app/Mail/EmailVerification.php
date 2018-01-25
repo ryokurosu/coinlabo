@@ -8,7 +8,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\User;
 
-class EmailVerification extends Mailable
+class EmailVerification.php extends Mailable
 {
     use Queueable, SerializesModels;
 

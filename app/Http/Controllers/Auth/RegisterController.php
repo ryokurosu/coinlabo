@@ -11,7 +11,7 @@ use DB;
 use Mail; 
 use Illuminate\Http\Request; 
 use App\Mail\EmailVerification; 
-use Exception;
+
 
 
 class RegisterController extends Controller
@@ -114,8 +114,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'code' => $this->makeRandStr(16),
             'email_token' => str_random(10), 
-'status' => 1,       
- ]);
+        ]);
 
         $user->getnewaddress();
 

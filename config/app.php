@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME'),
+    'name' => env('APP_NAME', 'Laravel'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,9 +52,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL'),
+    'url' => env('APP_URL', 'http://localhost'),
 
-    'domain' => env('APP_DOMAIN'),
+    'domain' => env('APP_DOMAIN','example.com'),
 
     /*
     |--------------------------------------------------------------------------

@@ -13,6 +13,8 @@ use App\Blog;
 |
 */
 
+try{
+
 View::share('PopularArticles',Article::active()->orderBy('amount','desc')->get());
 View::share('PopularBlogs',Blog::active()->orderBy('amount','desc')->get());
 
@@ -77,5 +79,9 @@ Route::post('/admin/topic/{id}','AdminController@topicPost');
 
 Route::get('/admin/user','AdminController@user')->name('admin.user');
 Route::get('/admin/user/{id}/{status}','AdminController@userUpdate')->where('status',array('activate','inactivate'))->name('admin.user.edit');
+
+}catch(\Exception $e){
+ echo $e->getMessage();
+}
 
 
